@@ -1,13 +1,24 @@
 function pesquisar() {
-    // Obtém a seção HTML onde os resultados da pesquisa serão exibidos
-    let secao = document.getElementById("resultados-pesquisa");
-    console.log(secao); // Usado para depuração, verifica se a seção foi encontrada
-  
-    // Inicializa uma string vazia para armazenar os resultados formatados
-    let resultado = "";
-  
-    // Itera sobre cada livro no array `livrosAsimov`
-    for (let livro of livrosAsimov) {
+  // Obtém a seção HTML onde os resultados da pesquisa serão exibidos
+  let secao = document.getElementById("resultados-pesquisa");
+  let campoPesquisa = document.getElementById("input__pesquisa").value;
+
+  let pesquisa = campoPesquisa.toLowerCase();
+
+  if ((!pesquisa) || (pesquisa == " ") || (pesquisa == "  ")) {
+    secao.innerHTML = `<p style="color: #dddddd;">Campo pesquisa vazio. Nada encontrado.</p>`;
+    return
+  }
+  // Inicializa uma string vazia para armazenar os resultados formatados
+  let resultado = "";
+  let tituloLivro = "";
+  let sinopseLivro = "";
+  // Itera sobre cada livro no array `livrosAsimov`
+  for (let livro of livrosAsimov) {
+    tituloLivro = livro.titulo.toLowerCase();
+    sinopseLivro = livro.sinopse.toLowerCase();
+
+    if ((tituloLivro.includes(pesquisa)) || (sinopseLivro.includes(pesquisa))) {
       // Constrói o HTML para cada livro, formatando as informações
       resultado += `
         <div class="item-resultado">
@@ -18,7 +29,12 @@ function pesquisar() {
         </div>
       `;
     }
-  
-    // Atribui o HTML gerado para a seção, substituindo o conteúdo anterior
-    secao.innerHTML = resultado;
   }
+
+  if(!resultado){
+    resultado = `<p style="color: #dddddd;">Nada encontrado.</p>`
+  }
+
+  // Atribui o HTML gerado para a seção, substituindo o conteúdo anterior
+  secao.innerHTML = resultado;
+}
